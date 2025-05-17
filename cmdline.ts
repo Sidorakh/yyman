@@ -3,106 +3,107 @@ import fs from 'fs';
 import path from 'path'
 import { parseArgs } from "util";
 
-const params = parseArgs({
-    options: {
-        'help': {
-            type: 'string'
+export default function cmd() {
+    const params = parseArgs({
+        options: {
+            'help': {
+                type: 'string'
+            },
+            'get-option-android': {
+                type: 'string',
+                multiple: true,
+            },
+            'get-option-html5': {
+                type: 'string',
+                multiple: true,
+            },
+            'get-option-linux': {
+                type: 'string',
+                multiple: true,
+            },
+            'get-option-mac': {
+                type: 'string',
+                multiple: true,
+            },
+            'get-option-main': {
+                type: 'string',
+                multiple: true,
+            },
+            'get-option-operagx': {
+                type: 'string',
+                multiple: true,
+            },
+            'get-option-windows': {
+                type: 'string',
+                multiple: true,
+            },
+            'format': {
+                type: 'string',
+            },
         },
-        'get-option-android': {
-            type: 'string',
-            multiple: true,
-        },
-        'get-option-html5': {
-            type: 'string',
-            multiple: true,
-        },
-        'get-option-linux': {
-            type: 'string',
-            multiple: true,
-        },
-        'get-option-mac': {
-            type: 'string',
-            multiple: true,
-        },
-        'get-option-main': {
-            type: 'string',
-            multiple: true,
-        },
-        'get-option-operagx': {
-            type: 'string',
-            multiple: true,
-        },
-        'get-option-windows': {
-            type: 'string',
-            multiple: true,
-        },
-        'format': {
-            type: 'string',
-        },
-    },
-    strict: false,
-});
-//console.log(params);
-const formats = ['json','text'];
+        strict: false,
+    });
+    //console.log(params);
+    const formats = ['json','text'];
 
 
-const args = Object.keys(params.values);
-if (args.includes('help')) {
-    // assume help requested
-    console.log(`Help`)
-    process.exit();
-}
-
-let format = formats[0];
-if (typeof(params.values.format) === 'string') {
-    if (formats.includes(params.values.format.toLowerCase())) {
-        format = params.values.format.toLowerCase();
+    const args = Object.keys(params.values);
+    if (args.includes('help')) {
+        // assume help requested
+        console.log(`Help`)
+        process.exit();
     }
-}
-let project = params.positionals[0];
 
-if (project == undefined) {
-    console.error('ERROR: Path not provided');
-    process.exit();
-}
-
-if (fs.statSync(project).isDirectory()) {
-    // assume it's a project folder , try to find a YYP
-    const candidates = fs.readdirSync(project);
-    for (const candidate of candidates) {
-        if (fs.statSync(path.join(project,candidate)).isFile() && candidate.endsWith('.yyp')) {
-            // assume this is the YYP
-            project = path.join(project,candidate);
+    let format = formats[0];
+    if (typeof(params.values.format) === 'string') {
+        if (formats.includes(params.values.format.toLowerCase())) {
+            format = params.values.format.toLowerCase();
         }
     }
-}
-const directory = path.dirname(project);    // project directory
+    let project = params.positionals[0];
 
-// loading YYP will go here eventually, nothing important in it yet though
+    if (project == undefined) {
+        console.error('ERROR: Path not provided');
+        process.exit();
+    }
 
-// cache for loaded files - should only need to load them once
-const cache = new Map<string,Object>();
-const modified_files: {[key: string]: boolean} = {};
+    if (fs.statSync(project).isDirectory()) {
+        // assume it's a project folder , try to find a YYP
+        const candidates = fs.readdirSync(project);
+        for (const candidate of candidates) {
+            if (fs.statSync(path.join(project,candidate)).isFile() && candidate.endsWith('.yyp')) {
+                // assume this is the YYP
+                project = path.join(project,candidate);
+            }
+        }
+    }
+    const directory = path.dirname(project);    // project directory
 
-const output: {[key: string]: any} = {};
+    // loading YYP will go here eventually, nothing important in it yet though
 
-for (const arg of args) {
-    if (arg == 'format') continue;
-    const rhs = params.values[arg];
-    console.log(`${arg}: ${rhs}`);
-    
-    const options = ['android','html5','ios','linux','mac','main','operagx','tvos','windows'];
+    // cache for loaded files - should only need to load them once
+    const cache = new Map<string,Object>();
+    const modified_files: {[key: string]: boolean} = {};
 
-    if (arg.startsWith('get-option') || arg.startsWith('set-option')) {
-        const type = arg.slice(4).replace('option-','');
+    const output: {[key: string]: any} = {};
+
+    for (const arg of args) {
+        if (arg == 'format') continue;
+        const rhs = params.values[arg];
+        console.log(`${arg}: ${rhs}`);
         
-        if (!options.includes(type)) {
-            console.error(`ERROR: ${type} not found`);
-            continue;
-        }
+        const options = ['android','html5','ios','linux','mac','main','operagx','tvos','windows'];
 
-        if (!cache.has(`options-${type}`)) {
-            const str = fs.readFileSync(path.join(directory,'options',type,`options_${type}.yy`),'utf8');
+        if (arg.startsWith('get-option') || arg.startsWith('set-option')) {
+            const type = arg.slice(4).replace('option-','');
+            
+            if (!options.includes(type)) {
+                console.error(`ERROR: ${type} not found`);
+                continue;
+            }
+
+            if (!cache.has(`options-${type}`)) {
+                const str = fs.readFileSync(path.join(directory,'options',type,`options_${type}.yy`),'utf8');
 
             let obj: YYOptionsFile;
             switch (type) {
@@ -134,4 +135,5 @@ for (const arg of args) {
         
     }
 
+}
 }
