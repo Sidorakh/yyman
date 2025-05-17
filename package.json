@@ -15,8 +15,8 @@
   },
   "scripts": {
     "test": "./build/test.js",
-    "prepare": "npm run ts-build",
-    "ts-build": "echo \"buildscript ahoy\" && tsc"
+    "prepare": "npm run build",
+    "ts-build": "tsc"
   },
   "repository": {
     "type": "git",
