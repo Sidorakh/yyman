@@ -16,7 +16,7 @@
   "scripts": {
     "test": "./build/test.js",
     "prepare": "npm run build",
-    "build": "tsc"
+    "build": "echo %cd% && tsc"
   },
   "repository": {
     "type": "git",
