@@ -1,8 +1,31 @@
 {
+  "name": "yyman",
+  "version": "0.0.1",
   "dependencies": {
     "json5": "^2.2.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.1"
-  }
+  },
+  "description": "basic modular library for manipulating gamemaker projects",
+  "main": "./build/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./build/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sidorakh/yyman.git"
+  },
+  "keywords": [
+    "gamemaker"
+  ],
+  "author": "Andrew Rutherford",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Sidorakh/yyman/issues"
+  },
+  "homepage": "https://github.com/Sidorakh/yyman#readme"
 }
