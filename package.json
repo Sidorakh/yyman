@@ -1,11 +1,12 @@
 {
   "name": "yyman",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "json5": "^2.2.3"
   },
   "devDependencies": {
-    "@types/node": "^22.14.1"
+    "@types/node": "^22.14.1",
+    "tsc": "^2.0.4"
   },
   "description": "basic modular library for manipulating gamemaker projects",
   "main": "./build/index.js",
@@ -14,7 +15,8 @@
   },
   "scripts": {
     "test": "./build/test.js",
-    "install": "npm run build"
+    "install": "npm run build",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
