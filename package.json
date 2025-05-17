@@ -1,6 +1,6 @@
 {
   "name": "yyman",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "json5": "^2.2.3"
   },
@@ -13,7 +13,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./build/test.js"
+    "test": "./build/test.js",
+    "install": "npm run build"
   },
   "repository": {
     "type": "git",
