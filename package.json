@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/Sidorakh/yyman#readme",
   "files": [
-    "/build/*"
+    "/build/*",
+    "*.ts"
   ]
 }
